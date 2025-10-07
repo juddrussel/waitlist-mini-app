@@ -8,9 +8,9 @@ import React from "react";
 
 export default function SaganaDashboard() {
   const [balance, setBalance] = useState(0);
-  const originalBalance = 100;
+  const originalBalance = 5000;
   const startTime = Date.now();
-  const balanceAnimDur = 2000; //2 seconds
+  const balanceAnimDur = 15000; //2 seconds
 
   useEffect(() => {
     let balanceTimer = setInterval(() => {
@@ -60,8 +60,8 @@ export default function SaganaDashboard() {
               }}
             />
             <div style={{ marginTop: "6px" }}>
-              <p style={{ marginTop: "-26px", marginLeft: "8px", fontWeight: "100", fontSize: "10px" }}>Tuloy ka,</p>
-              <p style={{ marginTop: "-2px", marginLeft: "8px", fontWeight: "bold", fontSize: "12px" }}>MANG ISKO!</p>
+              <p style={{ color: "#ffffffff", marginTop: "-26px", marginLeft: "8px", fontWeight: "100", fontSize: "10px" }}>Tuloy ka,</p>
+              <p style={{ color: "#ffffffff", marginTop: "-2px", marginLeft: "8px", fontWeight: "bold", fontSize: "12px" }}>MANG ISKO!</p>
             </div>
           </div>
 
@@ -112,7 +112,7 @@ export default function SaganaDashboard() {
           }}
         >
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "6px" }}>
-            <p style={{ marginLeft: "20px", fontSize: "11px"}}>My Account</p>
+            <p style={{ color: "#ffffffff", marginLeft: "20px", fontSize: "11px"}}>My Account</p>
             <img
               src="account.png"
               alt="Account Icon"
@@ -121,7 +121,7 @@ export default function SaganaDashboard() {
           </div>
 
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "8px" }}>
-            <h1 style={{ marginTop: "10px", marginLeft: "25px", fontSize: "50px", fontWeight: "bold"}}>₱{balance}</h1>
+            <h1 style={{ color: "#ffffffff", marginTop: "10px", marginLeft: "25px", fontSize: "50px", fontWeight: "bold"}}>₱{balance}</h1>
             <img
               src="view.png"
               alt="Balance Icon"
@@ -146,7 +146,7 @@ export default function SaganaDashboard() {
                     borderRadius: "50%",
                   }}
                 />
-                <p style={{ fontSize: "14px", marginTop: "4px" }}>{item.label}</p>
+                <p style={{ color: "#ffffffff", fontSize: "14px", marginTop: "4px" }}>{item.label}</p>
               </div>
             ))}
           </div>
@@ -167,7 +167,7 @@ export default function SaganaDashboard() {
             alignItems: "center",
             marginBottom: "12px",
             marginTop: "-10px",
-            width: "330px",
+            width: "100%",
             height: "60px",
           }}
         >
@@ -199,7 +199,7 @@ export default function SaganaDashboard() {
             justifyContent: "space-between",
             alignItems: "center",
             marginBottom: "12px",
-            width: "330px",
+            width: "100%",
             height: "60px",
           }}
         >
@@ -230,6 +230,7 @@ export default function SaganaDashboard() {
             gap: "12px",
             marginTop: "16px",
             marginBottom: "-16px",
+            height: "100%",
           }}
         >
           {[
@@ -249,6 +250,7 @@ export default function SaganaDashboard() {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
+                height: "100%",
               }}
             >
               <img
