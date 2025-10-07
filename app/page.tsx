@@ -4,85 +4,111 @@ import { sdk } from '@farcaster/miniapp-sdk'
 import { useRouter } from "next/navigation";
 import { minikitConfig } from "../minikit.config";
 import styles from "./page.module.css";
-
-export default function Home() {
-  const [email, setEmail] = useState("");
-  const [error, setError] = useState("");
-  const router = useRouter();
-
-  // Initialize the Farcaster miniapp
-  useEffect(() => {
-    sdk.actions.ready();
-  }, []);
-
-  // If you need to verify the user's identity, you can use the useQuickAuth hook.
-  // This hook will verify the user's signature and return the user's FID. You can update
-  // this to meet your needs. See the /app/api/auth/route.ts file for more details.
-  // Note: If you don't need to verify the user's identity, you can get their FID and other user data
-  // via `useMiniKit().context?.user`.
-  // const { data, isLoading, error } = useQuickAuth<{
-  //   userFid: string;
-  // }>("/api/auth");
-
-
-  const validateEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-
-    if (!email) {
-      setError("Please enter your email address");
-      return;
-    }
-
-    if (!validateEmail(email)) {
-      setError("Please enter a valid email address");
-      return;
-    }
-
-    // TODO: Save email to database/API
-    console.log("Valid email submitted:", email);
-    
-    // Navigate to success page
-    router.push("/success");
-  };
-
+export default function SaganaSplash() {
   return (
-    <div className={styles.container}>
-      <button className={styles.closeButton} type="button">
-        ✕
-      </button>
-      
-      <div className={styles.content}>
-        <div className={styles.waitlistForm}>
-          <h1 className={styles.title}>Join {minikitConfig.frame.name.toUpperCase()}</h1>
-          
-          <p className={styles.subtitle}>
-            Get early access and be the first to experience the future of<br />
-            crypto marketing strategy.
-          </p>
+    <div
+      style={{
 
-          <form onSubmit={handleSubmit} className={styles.form}>
-            <input
-              type="email"
-              placeholder="Your amazing email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className={styles.emailInput}
-            />
-            
-            {error && <p className={styles.error}>{error}</p>}
-            
-            <button type="submit" className={styles.joinButton}>
-              JOIN WAITLIST
-            </button>
-          </form>
+        position: "relative",
+        width: "100%",
+        height: "100vh",
+        overflow: "hidden",
+        background: `
+          linear-gradient(to bottom right, #FFD600, #006610), 
+          url('Welcome Page BG.png')
+        `,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundBlendMode: "overlay", 
+      }}
+    >
+      {}
+      <img
+        src="Shine.png"
+        alt="Shine Overlay"
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          opacity: 0.9,
+          zIndex: 2,
+        }}
+      />
+
+      {}
+      <img
+        src="Sagana.png"
+        alt="Sagana Logo"
+        style={{
+          position: "absolute",
+          top: "45%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: "550px",
+          height: "auto",
+          zIndex: 3,
+        }}
+      />
+
+      {}
+      <h1
+        style={{
+          position: "absolute",
+          top: "65%",
+          left: "53%",
+          transform: "translateX(-50%)",
+          fontSize: "32px",
+          fontWeight: "700",
+          letterSpacing: "0.5em",
+          background: "linear-gradient(to right, #FFFFFF, #6B6464)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          zIndex: 3,
+        }}
+      >
+        SAGANA
+      </h1>
+
+      {}
+      <footer
+        style={{
+          width: "100%",
+          padding: "8px 16px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          background: "rgba(0, 57, 1, 0.5)", 
+          color: "#E5E5E5",
+          fontSize: "12px",
+          fontWeight: "400",
+          fontFamily: "Roboto, sans-serif",
+          zIndex: 10,
+        }}
+      >
+        {}
+        <span style={{ fontWeight: "600", fontSize: "13px" }}>ISky</span>
+
+        {}
+        <div
+          style={{
+            position: "absolute",
+            left: "52%",
+            transform: "translateX(-50%)",
+            fontSize: "9px", 
+            fontWeight: "400",
+          }}
+        >
+          © All rights Reserved 2025
         </div>
-      </div>
+      </footer>
+
     </div>
   );
 }
