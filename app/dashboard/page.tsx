@@ -7,6 +7,22 @@ import styles from "./page.module.css";
 import React from "react";
 
 export default function SaganaDashboard() {
+  const [balance, setBalance] = useState(0);
+  const originalBalance = 100;
+  const startTime = Date.now();
+  const balanceAnimDur = 2000; //2 seconds
+
+  useEffect(() => {
+    let balanceTimer = setInterval(() => {
+      const progress = (Date.now() - startTime) / balanceAnimDur;
+      setBalance(Math.floor(originalBalance * Math.pow(progress, 2)));
+      if (progress >= 1) {
+        setBalance(originalBalance);
+        clearInterval(balanceTimer)
+      }
+    }, 16)
+    return() => clearInterval(balanceTimer)
+  }, [])
   return (
     <div
       style={{
@@ -105,7 +121,7 @@ export default function SaganaDashboard() {
           </div>
 
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "8px" }}>
-            <h1 style={{ marginTop: "10px", marginLeft: "25px", fontSize: "50px", fontWeight: "bold"}}>₱100.00</h1>
+            <h1 style={{ marginTop: "10px", marginLeft: "25px", fontSize: "50px", fontWeight: "bold"}}>₱{balance}</h1>
             <img
               src="view.png"
               alt="Balance Icon"
