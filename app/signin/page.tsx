@@ -1,27 +1,14 @@
 "use client";
-import { useState, useEffect } from "react";
-import { sdk } from '@farcaster/miniapp-sdk'
-import { useRouter } from "next/navigation";
-import styles from "./page.module.css";
 import React from "react";
-import { createBaseAccountSDK } from "@base-org/account";
+import useWalletSignIn from "../hooks/useWalletSignIn";
 
 export default function SaganaLogin() {
-   const [isSignedIn, setIsSignedIn] = useState(false);
-  const handleSignIn = async () => {
-    const sdk = createBaseAccountSDK(
-      {
-        appName: 'Sagana',
-        appLogoUrl: 'https://base.org/logo.png',
-      }
-    );
-    try {
-      await sdk.getProvider().request({ method: 'wallet_connect' });
-      setIsSignedIn(true);
-    } catch (error) {
-      console.error('Sign in failed:', error);
-    }
-  };
+   const { account, signIn } = useWalletSignIn();
+    if (account) {
+      window.location.href ='./dashboard'
+    }    
+
+
   return (
     <div
       style={{
@@ -34,9 +21,9 @@ export default function SaganaLogin() {
         fontFamily: "'Roboto', sans-serif",
       }}
     >
-      {}
+      { }
       <img
-        src="SaganaGreen.png" 
+        src="SaganaGreen.png"
         alt="Sagana Logo"
         style={{
           width: "240px",
@@ -46,7 +33,7 @@ export default function SaganaLogin() {
         }}
       />
 
-      {}
+      { }
       <p
         style={{
           fontSize: "40px",
@@ -64,7 +51,7 @@ export default function SaganaLogin() {
         SAGANA
       </p>
 
-      {}
+      { }
       <div
         style={{
           width: "80%",
@@ -74,9 +61,9 @@ export default function SaganaLogin() {
           alignItems: "center",
         }}
       >
-        {}
+        { }
         <button
-          onClick={() => handleSignIn()}
+          onClick={() => signIn()}
           style={{
             width: "100%",
             background: "linear-gradient(90deg, #0F9100, #FFD600)",

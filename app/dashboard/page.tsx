@@ -2,27 +2,37 @@
 import { useState, useEffect } from "react";
 import { sdk } from '@farcaster/miniapp-sdk'
 import { useRouter } from "next/navigation";
-import { minikitConfig } from "../minikit.config";
 import styles from "./page.module.css";
 import React from "react";
+import useWalletSignIn from "../hooks/useWalletSignIn";
+import { useAccount, useBalance } from "wagmi";
 
 export default function SaganaDashboard() {
+  const { account, signIn } = useWalletSignIn();
   const [balance, setBalance] = useState(0);
-  const originalBalance = 5000;
-  const startTime = Date.now();
   const balanceAnimDur = 15000; //2 seconds
-
+  const { address, isConnected } = useAccount()
+  const { data, isLoading, error } = useBalance({
+    address,
+    chainId: 8453
+  })
   useEffect(() => {
-    let balanceTimer = setInterval(() => {
-      const progress = (Date.now() - startTime) / balanceAnimDur;
-      setBalance(Math.floor(originalBalance * Math.pow(progress, 2)));
-      if (progress >= 1) {
-        setBalance(originalBalance);
-        clearInterval(balanceTimer)
-      }
-    }, 16)
-    return() => clearInterval(balanceTimer)
-  }, [])
+    if (!isLoading) {
+      signIn();
+
+      const startTime = Date.now();
+      const originalBalance = parseInt(data?.formatted ?? '0');
+      let balanceTimer = setInterval(() => {
+        const progress = (Date.now() - startTime) / balanceAnimDur;
+        setBalance(Math.floor(originalBalance * Math.pow(progress, 2)));
+        if (progress >= 1) {
+          setBalance(originalBalance);
+          clearInterval(balanceTimer)
+        }
+      }, 16)
+      return () => clearInterval(balanceTimer)
+    }
+  }, [isLoading])
   return (
     <div
       style={{
@@ -41,8 +51,8 @@ export default function SaganaDashboard() {
           padding: "15px 30px",
           borderBottomLeftRadius: "20px",
           borderBottomRightRadius: "20px",
-          
-          
+
+
         }}
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -112,7 +122,7 @@ export default function SaganaDashboard() {
           }}
         >
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "6px" }}>
-            <p style={{ color: "#ffffffff", marginLeft: "20px", fontSize: "11px"}}>My Account</p>
+            <p style={{ color: "#ffffffff", marginLeft: "20px", fontSize: "11px" }}>My Account</p>
             <img
               src="account.png"
               alt="Account Icon"
@@ -121,7 +131,7 @@ export default function SaganaDashboard() {
           </div>
 
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "8px" }}>
-            <h1 style={{ color: "#ffffffff", marginTop: "10px", marginLeft: "25px", fontSize: "50px", fontWeight: "bold"}}>₱{balance}</h1>
+            <h1 style={{ color: "#ffffffff", marginTop: "10px", marginLeft: "25px", fontSize: "50px", fontWeight: "bold" }}>₱{balance}</h1>
             <img
               src="view.png"
               alt="Balance Icon"
