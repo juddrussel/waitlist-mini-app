@@ -1,24 +1,28 @@
 "use client";
 import { useState, useEffect } from "react";
-import { sdk } from '@farcaster/miniapp-sdk'
-import { useRouter } from "next/navigation";
-import styles from "./page.module.css";
-import React from "react";
 import useWalletSignIn from "../hooks/useWalletSignIn";
-import { useAccount, useBalance } from "wagmi";
-
+import { useAccount, useBalance, useDisconnect } from "wagmi";
+import { createPublicClient, http, toCoinType } from "viem";
+import { base, baseSepolia, mainnet } from "viem/chains";
+const client = createPublicClient({ chain: mainnet, transport: http() })
 export default function SaganaDashboard() {
-  const { account, signIn } = useWalletSignIn();
+  const { signIn } = useWalletSignIn();
   const [balance, setBalance] = useState(0);
   const balanceAnimDur = 15000; //2 seconds
-  const { address, isConnected } = useAccount()
-  const { data, isLoading, error } = useBalance({
+  const { address, isConnected, connector } = useAccount()
+  const { disconnect } = useDisconnect()
+  const [basename, setBasename] = useState<string | null>(null)
+  const { data, isLoading } = useBalance({
     address,
-    chainId: 8453
+    chainId: 84532
   })
+
   useEffect(() => {
     if (!isLoading) {
       signIn();
+      client.getEnsName({address: address as `0x${string}`,  coinType: toCoinType(base.id)})
+        .then(name => setBasename(name))
+        .catch(console.error)
 
       const startTime = Date.now();
       const originalBalance = parseInt(data?.formatted ?? '0');
@@ -32,7 +36,7 @@ export default function SaganaDashboard() {
       }, 16)
       return () => clearInterval(balanceTimer)
     }
-  }, [isLoading])
+  }, [isLoading, isConnected])
   return (
     <div
       style={{
@@ -59,6 +63,10 @@ export default function SaganaDashboard() {
           {/* Profile (image + text below) */}
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
             <img
+              onClick={() => {
+                disconnect()
+              }
+              }
               src="profile.png"
               alt="Profile"
               style={{
@@ -71,7 +79,7 @@ export default function SaganaDashboard() {
             />
             <div style={{ marginTop: "6px" }}>
               <p style={{ color: "#ffffffff", marginTop: "-26px", marginLeft: "8px", fontWeight: "100", fontSize: "10px" }}>Tuloy ka,</p>
-              <p style={{ color: "#ffffffff", marginTop: "-2px", marginLeft: "8px", fontWeight: "bold", fontSize: "12px" }}>MANG ISKO!</p>
+              <p style={{ color: "#ffffffff", marginTop: "-2px", marginLeft: "8px", fontWeight: "bold", fontSize: "12px" }}>{basename}</p>
             </div>
           </div>
 

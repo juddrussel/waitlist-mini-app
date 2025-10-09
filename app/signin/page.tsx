@@ -1,13 +1,15 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import useWalletSignIn from "../hooks/useWalletSignIn";
 
 export default function SaganaLogin() {
-   const { account, signIn } = useWalletSignIn();
-    if (account) {
-      window.location.href ='./dashboard'
-    }    
+  const { account, signIn, isLoading } = useWalletSignIn();
 
+  useEffect(() => {
+    if (!isLoading && account) {
+      window.location.href = './dashboard'
+    }
+  }, [isLoading])
 
   return (
     <div
