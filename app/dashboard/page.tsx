@@ -10,7 +10,13 @@ export default function SaganaDashboard() {
   const [balance, setBalance] = useState(0);
   const balanceAnimDur = 15000; //2 seconds
   const { address, isConnected, connector } = useAccount()
-  const { disconnect } = useDisconnect()
+  const { disconnect } = useDisconnect({
+    mutation: {
+      onSuccess: () => {
+        window.location.href = '../signin'
+      }
+    }
+  })
   const [basename, setBasename] = useState<string | null>(null)
   const { data, isLoading } = useBalance({
     address,
@@ -20,10 +26,9 @@ export default function SaganaDashboard() {
   useEffect(() => {
     if (!isLoading) {
       signIn();
-      client.getEnsName({address: address as `0x${string}`,  coinType: toCoinType(base.id)})
+      client.getEnsName({ address: address as `0x${string}`, coinType: toCoinType(base.id) })
         .then(name => setBasename(name))
         .catch(console.error)
-
       const startTime = Date.now();
       const originalBalance = parseInt(data?.formatted ?? '0');
       let balanceTimer = setInterval(() => {

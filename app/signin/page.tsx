@@ -1,15 +1,17 @@
 "use client";
 import React, { useEffect } from "react";
 import useWalletSignIn from "../hooks/useWalletSignIn";
+import { useAccount } from "wagmi";
 
 export default function SaganaLogin() {
-  const { account, signIn, isLoading } = useWalletSignIn();
+  const { signIn } = useWalletSignIn();
+  const { isConnected } = useAccount()
 
   useEffect(() => {
-    if (!isLoading && account) {
+    if (isConnected) {
       window.location.href = './dashboard'
     }
-  }, [isLoading])
+  }, [isConnected])
 
   return (
     <div
