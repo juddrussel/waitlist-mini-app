@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 import { createPublicClient, http } from 'viem';
-import { base } from 'viem/chains';
+import { base, baseSepolia } from 'viem/chains';
 import { useNonceStore } from '../nonce/route';
 
 const nonces = useNonceStore();
-const client = createPublicClient({ chain: base, transport: http() });
+const client = createPublicClient({ chain: baseSepolia, transport: http() });
 
 export async function POST(req: Request) {
   try {

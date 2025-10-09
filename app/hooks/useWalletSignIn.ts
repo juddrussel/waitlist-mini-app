@@ -1,23 +1,25 @@
 'use client';
-
-import { getCryptoKeyAccount } from '@base-org/account';
 import { useState } from 'react';
-import { ConnectorAlreadyConnectedError, useConnect } from 'wagmi';
+import { createPublicClient } from 'viem';
+import { mainnet } from 'viem/chains';
+import { ConnectorAlreadyConnectedError, http, useConnect } from 'wagmi';
 interface WalletData {
-    account: string | null;
     signIn: () => Promise<void>;
+    isLoading: boolean;
 }
+const client = createPublicClient({
+    chain: mainnet,
+    transport: http(),
+})
 export default function useWalletSignIn(): WalletData {
-    const [account, setAccount] = useState<string | null>(null);
+    const [isLoading, setLoading] = useState<boolean>(true);
     const { connectAsync, connectors } = useConnect()
     const signIn = async () => {
-
+        setLoading(true)
         const baseAccountConnector = connectors.find(
-            connector => connector.id === 'baseAccount'
+            connector => connector.id === 'baseAccount',
         )
-
         if (!baseAccountConnector) return
-
         try {
             // Generate nonce
             const nonce = window.crypto.randomUUID().replace(/-/g, '')
@@ -34,7 +36,7 @@ export default function useWalletSignIn(): WalletData {
                     capabilities: {
                         signInWithEthereum: {
                             nonce,
-                            chainId: '0x2105'
+                            chainId: '0x14A34'
                         }
                     }
                 }]
@@ -51,15 +53,19 @@ export default function useWalletSignIn(): WalletData {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ address, message, signature })
             })
-        } catch (err) {
-            const account = await getCryptoKeyAccount();
+        } catch (err: any) {
             if (err instanceof ConnectorAlreadyConnectedError) {
-                setAccount(account.account?.id ?? null);
                 console.log("Already Signed in");
+            } if (err.code == -32603) {
+                window.location.href = '../signin'
+            } if (err.code == 4001) {
+                window.location.href = '../signin'
             } else {
                 console.error('Authentication failed:', err)
             }
+        } finally {
+            setLoading(false)
         }
     }
-    return { account, signIn };
+    return { signIn, isLoading };
 }
