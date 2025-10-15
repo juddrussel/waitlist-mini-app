@@ -60,8 +60,6 @@ export default function useWalletSignIn(): WalletData {
                 window.location.href = '../signin'
             } if (err.code == 4001) {
                 window.location.href = '../signin'
-            } else {
-                console.error('Authentication failed:', err)
             }
         } finally {
             setLoading(false)
