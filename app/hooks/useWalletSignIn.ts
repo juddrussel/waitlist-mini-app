@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ConnectorAlreadyConnectedError, http, useConnect } from 'wagmi';
+import { ConnectorAlreadyConnectedError, useConnect } from 'wagmi';
 interface WalletData {
     signIn: () => Promise<void>;
     isLoading: boolean;
