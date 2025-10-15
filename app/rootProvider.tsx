@@ -18,8 +18,8 @@ export function RootProvider({ children }: { children: React.ReactNode }) {
           miniKit={{
             enabled: true,
           }}
-          chain={baseSepolia}
-          children={children}>
+          chain={baseSepolia}>
+            {children}
         </OnchainKitProvider>
       </QueryClientProvider>
     </WagmiProvider>

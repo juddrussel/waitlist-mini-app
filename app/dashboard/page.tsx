@@ -2,14 +2,11 @@
 import { useState, useEffect } from "react";
 import useWalletSignIn from "../hooks/useWalletSignIn";
 import { useAccount, useBalance, useDisconnect } from "wagmi";
-import { createPublicClient, http, toCoinType } from "viem";
-import { base, baseSepolia, mainnet } from "viem/chains";
-const client = createPublicClient({ chain: mainnet, transport: http() })
 export default function SaganaDashboard() {
   const { signIn } = useWalletSignIn();
   const [balance, setBalance] = useState(0);
   const balanceAnimDur = 15000; //2 seconds
-  const { address, isConnected, connector } = useAccount()
+  const { address, isConnected } = useAccount()
   const { disconnect } = useDisconnect({
     mutation: {
       onSuccess: () => {
@@ -17,18 +14,14 @@ export default function SaganaDashboard() {
       }
     }
   })
-  const [basename, setBasename] = useState<string | null>(null)
   const { data, isLoading } = useBalance({
     address,
     chainId: 84532
   })
 
   useEffect(() => {
-    if (!isLoading) {
+    if (isConnected && !isLoading) {
       signIn();
-      client.getEnsName({ address: address as `0x${string}`, coinType: toCoinType(base.id) })
-        .then(name => setBasename(name))
-        .catch(console.error)
       const startTime = Date.now();
       const originalBalance = parseInt(data?.formatted ?? '0');
       let balanceTimer = setInterval(() => {
@@ -84,7 +77,7 @@ export default function SaganaDashboard() {
             />
             <div style={{ marginTop: "6px" }}>
               <p style={{ color: "#ffffffff", marginTop: "-26px", marginLeft: "8px", fontWeight: "100", fontSize: "10px" }}>Tuloy ka,</p>
-              <p style={{ color: "#ffffffff", marginTop: "-2px", marginLeft: "8px", fontWeight: "bold", fontSize: "12px" }}>{basename}</p>
+              <p style={{ color: "#ffffffff", marginTop: "-2px", marginLeft: "8px", fontWeight: "bold", fontSize: "12px" }}></p>
             </div>
           </div>
 
