@@ -40,6 +40,9 @@ export default function useWalletSignIn(): WalletData {
             // Extract and verify signature
             const { accounts } = authResult
             const { address, capabilities } = accounts[0]
+            if (!capabilities?.signInWithEthereum) {
+                throw new Error("signInWithEthereum capability missing");
+            }
             const { message, signature } = capabilities.signInWithEthereum
 
             // Send to backend for verification
