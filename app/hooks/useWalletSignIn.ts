@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { EIP1193Provider } from 'viem';
-import { BaseError, ConnectorAlreadyConnectedError, useConnect } from 'wagmi';
+import { ConnectorAlreadyConnectedError, useConnect } from 'wagmi';
 interface WalletData {
     signIn: () => Promise<void>;
     isLoading: boolean;
