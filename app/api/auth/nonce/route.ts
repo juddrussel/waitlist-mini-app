@@ -11,6 +11,4 @@ export async function GET() {
 }
 
 // Export helper so /verify can access same memory (for demo only)
-export function useNonceStore() {
-  return nonces;
-}
+export { nonces };

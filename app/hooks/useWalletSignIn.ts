@@ -1,15 +1,10 @@
 import { useState } from 'react';
-import { createPublicClient } from 'viem';
-import { mainnet } from 'viem/chains';
 import { ConnectorAlreadyConnectedError, http, useConnect } from 'wagmi';
 interface WalletData {
     signIn: () => Promise<void>;
     isLoading: boolean;
 }
-const client = createPublicClient({
-    chain: mainnet,
-    transport: http(),
-})
+
 export default function useWalletSignIn(): WalletData {
     const [isLoading, setLoading] = useState<boolean>(true);
     const { connectAsync, connectors } = useConnect()
