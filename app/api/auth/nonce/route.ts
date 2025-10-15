@@ -1,11 +1,11 @@
-import crypto from 'crypto';
-import { NextResponse } from 'next/server';
+import crypto from "crypto";
+import { NextResponse } from "next/server";
 
 // Simple in-memory nonce store (replace with Redis/DB in production)
 const nonces = new Set<string>();
 
-export async function GET() {
-  const nonce = crypto.randomBytes(16).toString('hex');
+export async function GET(request: Request): Promise<NextResponse> {
+  const nonce = crypto.randomBytes(16).toString("hex");
   nonces.add(nonce);
   return NextResponse.json({ nonce });
 }
