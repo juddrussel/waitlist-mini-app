@@ -3,12 +3,12 @@ import { createPublicClient, http } from 'viem';
 import { baseSepolia } from 'viem/chains';
 import { useNonceStore } from '../nonce/route';
 
-const nonces = useNonceStore();
 const client = createPublicClient({ chain: baseSepolia, transport: http() });
 
 export async function POST(req: Request) {
   try {
     const { address, message, signature } = await req.json();
+    const nonces = useNonceStore();
 
     // 1. Validate nonce
     const nonceMatch = message.match(/at (\w{32})$/);
