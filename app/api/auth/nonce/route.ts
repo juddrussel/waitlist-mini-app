@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 // Simple in-memory nonce store (replace with Redis/DB in production)
 const nonces = new Set<string>();
 
-export async function GET(request: Request): Promise<NextResponse> {
+export async function GET(): Promise<NextResponse> {
   const nonce = crypto.randomBytes(16).toString("hex");
   nonces.add(nonce);
   return NextResponse.json({ nonce });
