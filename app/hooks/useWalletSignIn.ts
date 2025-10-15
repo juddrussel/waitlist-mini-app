@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { ConnectorAlreadyConnectedError, useConnect } from 'wagmi';
+import { EIP1193Provider } from 'viem';
+import { BaseError, ConnectorAlreadyConnectedError, useConnect } from 'wagmi';
 interface WalletData {
     signIn: () => Promise<void>;
     isLoading: boolean;
@@ -20,7 +21,7 @@ export default function useWalletSignIn(): WalletData {
 
             // Connect and get provider
             await connectAsync({ connector: baseAccountConnector })
-            const provider = baseAccountConnector.provider as any;
+            const provider = baseAccountConnector.provider as EIP1193Provider;
 
             // Perform SIWE authentication
             const authResult = await provider.request({
@@ -47,13 +48,15 @@ export default function useWalletSignIn(): WalletData {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ address, message, signature })
             })
-        } catch (err: any) {
+        } catch (err) {
             if (err instanceof ConnectorAlreadyConnectedError) {
                 console.log("Already Signed in");
-            } if (err.code == -32603) {
-                window.location.href = '../signin'
-            } if (err.code == 4001) {
-                window.location.href = '../signin'
+            } else if (err instanceof BaseError && (err as any).code === -32603) {
+                window.location.href = "../signin";
+            } else if (err instanceof BaseError && (err as any).code === 4001) {
+                window.location.href = "../signin";
+            } else {
+                console.error("Unknown error:", err);
             }
         } finally {
             setLoading(false)
