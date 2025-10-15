@@ -40,6 +40,9 @@ export default function useWalletSignIn(): WalletData {
             // Extract and verify signature
             const { accounts } = authResult
             const { address, capabilities } = accounts[0]
+            if (!capabilities?.signInWithEthereum) {
+                throw new Error("signInWithEthereum capability missing");
+            }
             const { message, signature } = capabilities.signInWithEthereum
 
             // Send to backend for verification
@@ -51,12 +54,11 @@ export default function useWalletSignIn(): WalletData {
         } catch (err) {
             if (err instanceof ConnectorAlreadyConnectedError) {
                 console.log("Already Signed in");
-            } else if (err instanceof BaseError && (err as any).code === -32603) {
-                window.location.href = "../signin";
-            } else if (err instanceof BaseError && (err as any).code === 4001) {
-                window.location.href = "../signin";
-            } else {
-                console.error("Unknown error:", err);
+            } else if (typeof err === "object" && err !== null && "code" in err) {
+                const code = (err as { code: number }).code;
+                if (code == -32603 || code == 4001) {
+                    window.location.href = "../signin";
+                }
             }
         } finally {
             setLoading(false)
