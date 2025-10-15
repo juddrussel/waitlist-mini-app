@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createPublicClient, http } from 'viem';
-import { base, baseSepolia } from 'viem/chains';
+import { baseSepolia } from 'viem/chains';
 import { useNonceStore } from '../nonce/route';
 
 const nonces = useNonceStore();

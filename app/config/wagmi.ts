@@ -1,6 +1,6 @@
 // config/wagmi.ts
 import { http, createConfig } from 'wagmi'
-import { base, baseSepolia } from 'wagmi/chains'
+import { baseSepolia } from 'wagmi/chains'
 import { baseAccount } from 'wagmi/connectors'
 
 

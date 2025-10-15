@@ -1,4 +1,3 @@
-'use client';
 import { useState } from 'react';
 import { createPublicClient } from 'viem';
 import { mainnet } from 'viem/chains';
