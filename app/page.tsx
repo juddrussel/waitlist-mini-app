@@ -1,9 +1,4 @@
 "use client";
-import { useState, useEffect } from "react";
-import { sdk } from '@farcaster/miniapp-sdk'
-import { useRouter } from "next/navigation";
-import { minikitConfig } from "../minikit.config";
-import styles from "./page.module.css";
 export default function SaganaSplash() {
   return (
     <div

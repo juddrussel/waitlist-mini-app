@@ -24,7 +24,7 @@ export default function SaganaDashboard() {
       signIn();
       const startTime = Date.now();
       const originalBalance = parseInt(data?.formatted ?? '0');
-      let balanceTimer = setInterval(() => {
+      const balanceTimer = setInterval(() => {
         const progress = (Date.now() - startTime) / balanceAnimDur;
         setBalance(Math.floor(originalBalance * Math.pow(progress, 2)));
         if (progress >= 1) {
